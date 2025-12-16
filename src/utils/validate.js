@@ -1,28 +1,16 @@
 
 import tasks from '../../data/tasks.json' with { type: "json" };
 
-const dataExample = [{
-    "id": "t_1001",
-    "title": "Thedoerer",
-    "status": "open",
-    "priority": "medium",
-    "due": "2025-1-31",
-    "createdAt": "2024-10-01T09:00:00.000Z",
-    "updatedAt": "2024-10-05T14:30:00.000Z"
-  }
+const dataExample = [tasks
 ]
 
 const validateTaskInput = (dataExample) => {
     
-    
     let dateValidate = true;
 
     for (const element of dataExample) {
-        const [year, month, day] = element.due.split("-")
-        const thisDate = "2025-12-16"
-        const [thisYear, thisMonth, thisDay] = thisDate.split("-")
-        
-        
+        const thisDate = element.due
+
         if (!element.title || typeof element.title !== "string") {
             dateValidate = false 
             throw new Error("Title is required and must be a string");
@@ -32,14 +20,15 @@ const validateTaskInput = (dataExample) => {
             throw new Error("Title must be at least 3 letters"); 
         }
         if (element.priority !== "high" && element.priority !== "medium" && element.priority !== "low") {
-            dateValidate = true
+            dateValidate = false
             throw new Error("Priority must be in high or medium or low");
         }
-        
-        
+        if (!(/^\d{4}-\d{2}-\d{2}$/.test(thisDate)) || thisDate === null) {
+            dateValidate = false
+            throw new Error("Tanggal tidak sesuai");
+        }
     }
-    
-    
+    return dateValidate
 }
 
 console.log(validateTaskInput(dataExample));
